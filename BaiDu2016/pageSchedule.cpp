@@ -1,34 +1,30 @@
 #include <iostream>
-#include <set>
-
-struct req{
-	int id;
-	int timeTamp;
-};
-
-bool cmp(const req& a,const req& b)const{
-		return a.timeTamp>b.timeTamp;
-}
-
+#include <deque>
+#include <algorithm>
+using namespace std;
 
 int main(){
 	int cache_size;
 	while(cin>>cache_size){
-		int num;
-		cin>>num;
-		set<req,cmp> mycache;
+		int ReqNum;
+		deque<int>cache;
+		cin>>ReqNum;
 		int fail=0;
-		for(int i=0;i<num;i++){
-			int requstId;
-			cin>>requstId;
-			if(set.size()<cache_size){
-				req curReq(requstId,i);
-				mycache.insert(curReq);
+		for(int i=0;i<ReqNum;i++){
+			int  reqId;
+			cin>>reqId;
+			deque<int>::iterator iter = find(cache.begin(),cache.end(),reqId);
+			if(iter== cache.end()){
+				fail++;
+				if(cache.size()>=cache_size){
+					cache.pop_front();
+				}
+				cache.push_back(reqId);
 			}
 			else{
-				if()
+				continue;	
 			}
 		}
-
+		cout<<fail<<endl;
 	}
 }
