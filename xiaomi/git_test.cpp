@@ -21,18 +21,22 @@ public:
          return false;
      }
 
-     void dfs(vector<string>& matrix, int node,int index,vector<int>& path){
+     bool dfs(vector<string>& matrix, int node,int index,vector<int>& path){
          path.push_back(node);
+         cout<<"visit "<<node<<endl;
          if(node == index){
-             return;
+             return true;
          }
          string s = matrix[node];
          for(int i=0;i<s.size();i++){
              if(s[i]=='1' && !notfind(i,path)) {
-                 dfs(matrix,i,index,path);
-                 path.pop_back(i);
+                 bool t=dfs(matrix,i,index,path);
+                 if(t) return true;
+                 else
+                    path.pop_back();
              }
          }
+         return false;
      }
 
      int getNode(vector<int>& pathA, vector<int>& pathB){
@@ -42,19 +46,28 @@ public:
             if(pathA[lenB-1] == pathB[lenB-1]) return pathA[lenB-1];
         }
         if(lenB>lenA){
-            if(pathA[lenA-1] == pathB[lenB-1]) return pathA[lenA-1];
+            if(pathA[lenA-1] == pathB[lenA-1]) return pathA[lenA-1];
         }
+
+        if(lenA == lenB) if(pathA[lenA-1] == pathB[lenA-1]) return pathA[lenA-1];
         for(int i=0;i<pathA.size()-1 && pathB.size()-1;i++){
             if(pathA[i]==pathB[i] && pathA[i+1]!=pathB[i+1])
                 return pathA[i];
         }
         return -1;
      }
+	void print(vector<int> path){
+		for(int i=0;i<path.size();i++)
+			cout<<path[i]<<" ";
+		cout<<endl;
+	}
 
     int getSplitNode(vector<string> matrix, int indexA, int indexB) {
         vector<int> pathA,pathB;
         dfs(matrix,0,indexA,pathA);
         dfs(matrix,0,indexB,pathB);
+        print(pathA);
+        print(pathB);
         return getNode(pathA,pathB);
     }
 };
@@ -68,6 +81,18 @@ int main(){
         cin>>s;
         matrix.push_back(s);
     }
-    cout<<getSplitNode(matrix,indexA,indexB)<<endl;
+    while(1){
+    cin>>indexA>>indexB;
+    cout<<so.getSplitNode(matrix,indexA,indexB)<<endl;
+}
     return 0;
 }
+
+/*
+01011
+10100
+01000
+10000
+10000
+
+*/
